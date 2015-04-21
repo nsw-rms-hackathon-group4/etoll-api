@@ -11,7 +11,7 @@ tollService.init();
 /* GET home page. */
 app.get('/', function(req, res, next) {
   console.log(app);
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Etoll Mobile Api' });
 });
 
 
