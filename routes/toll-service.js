@@ -87,8 +87,8 @@ TollService.addEntry = function(entry, cb) {
 };
 
 TollService.addExit = function(exit, cb) {
-    // Retrieve latest tollUsage record  for userid
-    var query = TollService.TollUsage.find({userid: exit.userid}).limit(1).sort('-entrytime');
+    // Retrieve latest tollUsage record  for userId
+    var query = TollService.TollUsage.find({userId: exit.userId}).limit(1).sort('-entrytime');
 
     query.exec(function(err, tollUsage) {
         // Update  with exit details

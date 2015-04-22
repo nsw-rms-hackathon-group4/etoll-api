@@ -86,13 +86,14 @@ app.get('/toll-gates/', function (req, res) {
 app.get('/toll-usage/:userid', function (req, res) {
     console.log('GET:Toll usage query for user:' + req.params.userid);
     res.json({
-        tollusage: [{road: 'Sydney Harbour Bridge', entry: 'Milsons Point', entryDate: '14:34:12 06/12/2014'},
+        tollusage: [{uerId: '1234', road: 'Sydney Harbour Bridge', entryPoint: 'Milsons Point', entryTime: '14:34:12 06/12/2014'},
             {
+                userId: '1234',
                 road: 'M7',
-                entry: 'Winston Hill',
-                exit: 'Eastern Creek',
-                entryDate: '14:34:12 12/12/2014',
-                exitDate: '14:58:10 12/12/2014'
+                entryPoint: 'Winston Hill',
+                exitPoint: 'Eastern Creek',
+                entryTime: '14:34:12 12/12/2014',
+                exitTime: '14:58:10 12/12/2014'
             }
         ]
     })
