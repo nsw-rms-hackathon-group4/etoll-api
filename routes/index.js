@@ -1,13 +1,12 @@
 var app = require('express')();
 var bodyParser = require('body-parser');
 var tollService = require('./toll-service');
-//var etollApi = require('../app');
+tollService.init();
+
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
-//var AWS = require('aws-sdk');
-//var db = new AWS.DynamoDB();
-//allow cors headers
 
+//allow cors headers
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -18,7 +17,9 @@ app.use(function (req, res, next) {
 app.options("*", function (req, res) {
     res.send(200)
 });
-tollService.init();
+
+
+
 /* GET home page. */
 app.get('/', function (req, res, next) {
     console.log(app);
