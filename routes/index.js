@@ -54,6 +54,7 @@ app.post('/add-exit',function(req,res){
 
 });
 
+
 app.get('/toll-gates/', function (req, res) {
     console.log('Getting tollgate locations');
 
