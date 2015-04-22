@@ -105,7 +105,7 @@ TollService.addExit = function(exit, cb) {
 };
 
 TollService.findUsageByUserId = function(userId, cb) {
-    var query = {userId: userId};
+    var query = {userId: '1235'};
     TollService.TollUsage.find(query, function(err, tollUsages) {
         if (err) return console.error(err);
         console.log("Tollusages retrieved successfully" + tollUsages);
