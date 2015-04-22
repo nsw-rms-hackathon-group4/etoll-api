@@ -88,18 +88,27 @@ TollService.addEntry = function(entry, cb) {
 
 TollService.addExit = function(exit, cb) {
     try {
+        var query = {userId : exit.userId};
+        var update = {exitPoint: exit.exitPoint, exitTime: exit.exitTime};
+        var options = {sort: '-entryTime'};
+        TollService.TollUsage.findOneAndUpdate(query, update, options, function (err, savedUsage) {
+                if (err) return console.error(err);
+                console.log("Updated with exit data" + savedUsage.userId + " : " + savedUsage.exitPoint + " : " + savedUsage.exitTime);
+                cb(savedUsage);
+        });
+
         // Retrieve latest tollUsage record  for userId
-        var query = TollService.TollUsage.find({userId: exit.userId}).limit(1).sort('-entryTime');
-        query.exec(function (err, tollUsage) {
-            if (err) return console.error(err);
-            if (tollUsage) {
-                // Update  with exit details
-                tollUsage.exitPoint = exit.exitPoint;
-                tollUsage.exitTime = exit.exitTime;
-                cb(tollUsage);
-            } else {
-                cb({error: 'Entry not found'});
-            }
+//        var query = TollService.TollUsage.find({userId: exit.userId}).limit(1).sort('-entryTime');
+//        query.exec(function (err, tollUsage) {
+//            if (err) return console.error(err);
+//            if (tollUsage) {
+//                // Update  with exit details
+//                tollUsage.exitPoint = exit.exitPoint;
+//                tollUsage.exitTime = exit.exitTime;
+//                cb(tollUsage);
+//            } else {
+//                cb({error: 'Entry not found'});
+//            }
             // Update  with exit details
 //            tollUsage.exitPoint = exit.exitPoint;
 //            tollUsage.exitTime = exit.exitTime;
@@ -107,7 +116,7 @@ TollService.addExit = function(exit, cb) {
 //                if (err) return console.error(err);
 //                console.log("Updated with exit data" + savedUsage.userId + " : " + savedUsage.exitPoint + " : " + savedUsage.exitTime);
 //                cb(savedUsage);
-            });
+//            });
 //        });
     } catch(e) {
         console.log("Error occurred in add Exit", e.message);
