@@ -93,7 +93,7 @@ TollService.addExit = function(exit, cb) {
         query.exec(function (err, tollUsage) {
             if (err) return console.error(err);
             if (tollUsage) {
-                cb({userId: '1235', entryPoint: "XXX", entryTime: '12:12:12 12/12/2012'});
+                cb(tollUsage);
             } else {
                 cb({userId: '1235', entryPoint: "Empty", entryTime: '12:12:12 12/12/2012'});
             }
