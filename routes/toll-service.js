@@ -112,7 +112,6 @@ TollService.findUsageByUserId = function(userId, cb) {
     });
 };
 
-
 TollService.charge = function(tollUsage, cb) {
     // Find toll usage and update with the charge and return it.
     var query = tollUsage;
