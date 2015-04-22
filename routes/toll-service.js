@@ -27,7 +27,8 @@ TollService.createSchema = function () {
         entryPoint: String,
         entryTime: String,
         exitPoint: String,
-        exitTime: String
+        exitTime: String,
+        charge : String
     });
     console.log("Creating models");
     TollService.TollGate = mongoose.model("TollGate", TollService.tollGateSchema);
@@ -88,6 +89,7 @@ TollService.addEntry = function(entry, cb) {
 
 TollService.addExit = function(exit, cb) {
     try {
+        // Retrieve latest userId tollUsage record (sorted by entryTime) and update with exit info
         var query = {userId : exit.userId};
         var update = {exitPoint: exit.exitPoint, exitTime: exit.exitTime};
         var options = {sort: '-entryTime', new: 'true'};
@@ -97,30 +99,30 @@ TollService.addExit = function(exit, cb) {
                 cb(savedUsage);
         });
 
-        // Retrieve latest tollUsage record  for userId
-//        var query = TollService.TollUsage.find({userId: exit.userId}).limit(1).sort('-entryTime');
-//        query.exec(function (err, tollUsage) {
-//            if (err) return console.error(err);
-//            if (tollUsage) {
-//                // Update  with exit details
-//                tollUsage.exitPoint = exit.exitPoint;
-//                tollUsage.exitTime = exit.exitTime;
-//                cb(tollUsage);
-//            } else {
-//                cb({error: 'Entry not found'});
-//            }
-            // Update  with exit details
-//            tollUsage.exitPoint = exit.exitPoint;
-//            tollUsage.exitTime = exit.exitTime;
-//            tollUsage.save(function (err, savedUsage) {
-//                if (err) return console.error(err);
-//                console.log("Updated with exit data" + savedUsage.userId + " : " + savedUsage.exitPoint + " : " + savedUsage.exitTime);
-//                cb(savedUsage);
-//            });
-//        });
     } catch(e) {
         console.log("Error occurred in add Exit", e.message);
     }
+};
+
+TollService.findUsageByUserId = function(userId, cb) {
+    TollService.TollUsage.find({userId: userId}, function(err, tollUsages) {
+        if (err) return console.error(err);
+        console.log("Tollusages retrieved successfully" + tollUsages);
+        cb(tollUsages);
+    });
+};
+
+
+TollService.charge = function(tollUsage, cb) {
+    // Find toll usage and update with the charge and return it.
+    var query = tollUsage;
+    var update = {charge: '$12.23'};
+    var options = {sort: '-entryTime', new: 'true'};
+    TollService.TollUsage.findOneAndUpdate(query, update, options, function (err, savedUsage) {
+        if (err) return console.error(err);
+        console.log("Updated with exit data" + savedUsage.userId + " : " + savedUsage.exitPoint + " : " + savedUsage.exitTime);
+        cb(savedUsage);
+    });
 };
 
 

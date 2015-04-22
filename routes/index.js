@@ -58,21 +58,6 @@ app.post('/add-exit',function(req,res){
 app.get('/toll-gates/', function (req, res) {
     console.log('Getting tollgate locations');
 
-//    var params = {
-//        ExclusiveStartTableName: 'TOLL_MASTER',
-//        Limit: 10
-//    };
-
-//  db.listTables(params, function(err, data) {
-//      if (err) console.log(err, err.stack);
-//      else console.log(data.TableNames);
-//  });
-
-
-//    db.describeTable({TableName: 'TOLL_MASTER'}, function(err, data) {
-//        if (err) console.log(err, err.stack); // an error occurred
-//        else     console.log(data);           // successful response
-//    });
 
     tollService.findAllGates(function (tollgates) {
         res.json(tollgates);
@@ -88,20 +73,35 @@ app.get('/toll-gates/', function (req, res) {
 //          ]})
 });
 
-app.get('/toll-usage/:userid', function (req, res) {
-    console.log('GET:Toll usage query for user:' + req.params.userid);
-    res.json({
-        tollusage: [{uerId: '1234', road: 'Sydney Harbour Bridge', entryPoint: 'Milsons Point', entryTime: '14:34:12 06/12/2014'},
-            {
-                userId: '1234',
-                road: 'M7',
-                entryPoint: 'Winston Hill',
-                exitPoint: 'Eastern Creek',
-                entryTime: '14:34:12 12/12/2014',
-                exitTime: '14:58:10 12/12/2014'
-            }
-        ]
-    })
+
+
+
+app.get('/toll-usage/:userId', function (req, res) {
+    console.log('GET:Toll usage query for user:' + req.params.userId);
+    tollService.findUsageByUserId(req.param.userId, function (tollUsages) {
+        res.json(tollUsages);
+    });
+//    res.json({
+//        tollusage: [{uerId: '1234', road: 'Sydney Harbour Bridge', entryPoint: 'Milsons Point', entryTime: '14:34:12 06/12/2014'},
+//            {
+//                userId: '1234',
+//                road: 'M7',
+//                entryPoint: 'Winston Hill',
+//                exitPoint: 'Eastern Creek',
+//                entryTime: '14:34:12 12/12/2014',
+//                exitTime: '14:58:10 12/12/2014'
+//            }
+//        ]
+//    })
+});
+
+
+app.get('/toll-charge/', function (req, res) {
+    console.log('GET:Toll charge for toll usage:' + req.body);
+    tollService.charge(req.body, function (usage) {
+        res.json(usage);
+    });
+
 });
 
 module.exports = app;
