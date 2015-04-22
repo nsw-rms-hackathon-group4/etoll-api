@@ -43,7 +43,7 @@ app.post('/add-entry',function(req,res){
 });
 
 app.post('/add-exit',function(req,res){
-  console.log('POST:Adding exist' + req.body);
+  console.log('POST:Adding exit info' + req.body);
   tollService.addExit(req.body, function(usage) {
       res.json(usage);
   });

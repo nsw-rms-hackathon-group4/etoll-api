@@ -96,7 +96,7 @@ TollService.addExit = function(exit, cb) {
         tollUsage.exitTime = exit.exitTime;
         tollUsage.save(function (err, savedUsage) {
             if (err) return console.error(err);
-            console.log("Updated with exit info" + savedUsage.userId + " : " + savedUsage.exitPoint + " : " + savedUsage.exitTime);
+            console.log("Updated with exit data" + savedUsage.userId + " : " + savedUsage.exitPoint + " : " + savedUsage.exitTime);
             cb(savedUsage);
         });
     });
