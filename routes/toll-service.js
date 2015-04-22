@@ -90,16 +90,17 @@ TollService.addExit = function(exit, cb) {
     try {
         // Retrieve latest tollUsage record  for userId
         var query = TollService.TollUsage.find({userId: '1235'}).limit(1).sort('-entryTime');
-        cb({userId: '1235', entryPoint: "XXX", entryTime: '12:12:12 12/12/2012'});
-//        query.exec(function (err, tollUsage) {
-//            // Update  with exit details
+        query.exec(function (err, tollUsage) {
+            if (err) return console.error(err);
+            cb({userId: '1235', entryPoint: "XXX", entryTime: '12:12:12 12/12/2012'});
+            // Update  with exit details
 //            tollUsage.exitPoint = exit.exitPoint;
 //            tollUsage.exitTime = exit.exitTime;
 //            tollUsage.save(function (err, savedUsage) {
 //                if (err) return console.error(err);
 //                console.log("Updated with exit data" + savedUsage.userId + " : " + savedUsage.exitPoint + " : " + savedUsage.exitTime);
 //                cb(savedUsage);
-//            });
+            });
 //        });
     } catch(e) {
         console.log("Error occurred in add Exit", e.message);
