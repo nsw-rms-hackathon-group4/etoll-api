@@ -107,7 +107,6 @@ TollService.addExit = function(exit, cb) {
 };
 
 
-
 module.exports = TollService;
 
 
