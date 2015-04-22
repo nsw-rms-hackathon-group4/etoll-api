@@ -18,7 +18,7 @@ app.use(function (req, res, next) {
 app.options("*", function (req, res) {
     res.send(200)
 });
-//tollService.init();
+tollService.init();
 /* GET home page. */
 app.get('/', function (req, res, next) {
     console.log(app);
