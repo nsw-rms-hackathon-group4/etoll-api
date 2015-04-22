@@ -96,7 +96,7 @@ app.get('/toll-usage/:userId', function (req, res) {
 });
 
 
-app.get('/toll-charge/', function (req, res) {
+app.post('/toll-charge/', function (req, res) {
     console.log('GET:Toll charge for toll usage:' + req.body);
     tollService.charge(req.body, function (usage) {
         res.json(usage);
