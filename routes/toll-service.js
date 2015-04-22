@@ -11,8 +11,8 @@ TollService.init = function () {
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function (callback) {
         console.log("connected successfully");
-        TollService.createSchema();
-        TollService.importTollGates();
+//        TollService.createSchema();
+//        TollService.importTollGates();
     });
 };
 TollService.createSchema = function () {
@@ -59,11 +59,14 @@ TollService.importTollGates = function () {
 };
 
 
-TollService.tollgates = function(cb) {
+TollService.findAllGates = function (cb) {
     TollService.TollGate.find(function(err, tollgates) {
         if (err) return console.error(err);
         console.log("Tollgates retrieved successfully" + tollgates);
+        cb(tollgates);
     });
-}
+};
 
 module.exports = TollService;
+
+

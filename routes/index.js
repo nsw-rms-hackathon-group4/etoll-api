@@ -53,12 +53,11 @@ app.get('/toll-gates/', function(req,res){
 //        else     console.log(data);           // successful response
 //    });
 
-    tollService.TollGate.find(function(err, tollgates) {
-        if (err) return console.error(err);
-        console.log("Tollgates retrieved successfully" + tollgates);
+    tollService.findAllGates(function(tollgates) {
+        res.json(tollgates);
     });
 
-    res.json(tollgates);
+
 //  res.json({ tollgates: [ {road: 'Sydney Harbour Bridge', gates: [{name: 'Milsons Point', longtitude: '151.212707', latitude: '-33.848882'}]},
 //                          {road: 'Sydney Harbour Tunnel', gates: [{name: 'Milsons Point', longtitude: '151.212707', latitude: '-33.848882'}]},
 //                          {road: 'M7', gates: [{name: 'Winston Hills', longtitude: '150.963061', latitude: '-33.764937'},
