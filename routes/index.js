@@ -3,39 +3,50 @@ var bodyParser = require('body-parser');
 var tollService = require('./toll-service');
 //var etollApi = require('../app');
 app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
 //var AWS = require('aws-sdk');
 //var db = new AWS.DynamoDB();
+//allow cors headers
 
-tollService.init();
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+//allow all options request to be 200
+app.options("*", function (req, res) {
+    res.send(200)
+});
+//tollService.init();
 /* GET home page. */
-app.get('/', function(req, res, next) {
-  console.log(app);
-  res.render('index', { title: 'Etoll Mobile Api' });
+app.get('/', function (req, res, next) {
+    console.log(app);
+    res.render('index', {title: 'Etoll Mobile Api'});
 });
 
 
-app.get('/entry', function(req, res, next) {
-   res.json({id: '1234', message: 'Entry recorded' })
+app.get('/entry', function (req, res, next) {
+    res.json({id: '1234', message: 'Entry recorded'})
 });
 
-app.get('/exit', function(req, res, next) {
-  res.json({id: '1234', message: 'Exit recorded' })
+app.get('/exit', function (req, res, next) {
+    res.json({id: '1234', message: 'Exit recorded'})
 });
 
-app.post('/add-entry',function(req,res){
-  console.log('POST:Adding entry' + req.body);
-  res.json(req.body);
+app.post('/add-entry', function (req, res) {
+    console.log('POST:Adding entry' + req.body);
+    res.json(req.body);
 });
 
-app.post('/add-exit',function(req,res){
-  console.log('POST:Adding exist' + req.body);
-  console.log(req.body);
-  res.json(req.body);
+app.post('/add-exit', function (req, res) {
+    console.log('POST:Adding exist' + req.body);
+    console.log(req.body);
+    res.json(req.body);
 });
 
-app.get('/toll-gates/', function(req,res){
-  console.log('Getting tollgate locations');
+app.get('/toll-gates/', function (req, res) {
+    console.log('Getting tollgate locations');
 
 //    var params = {
 //        ExclusiveStartTableName: 'TOLL_MASTER',
@@ -53,7 +64,7 @@ app.get('/toll-gates/', function(req,res){
 //        else     console.log(data);           // successful response
 //    });
 
-    tollService.findAllGates(function(tollgates) {
+    tollService.findAllGates(function (tollgates) {
         res.json(tollgates);
     });
 
@@ -67,11 +78,19 @@ app.get('/toll-gates/', function(req,res){
 //          ]})
 });
 
-app.get('/toll-usage/:userid', function(req,res){
-  console.log('GET:Toll usage query for user:' + req.params.userid);
-  res.json({ tollusage: [ {road:'Sydney Harbour Bridge', entry: 'Milsons Point', entryDate: '14:34:12 06/12/2014'},
-                          {road:'M7', entry: 'Winston Hill', exit: 'Eastern Creek',  entryDate: '14:34:12 12/12/2014', exitDate: '14:58:10 12/12/2014'}
-                         ]})
+app.get('/toll-usage/:userid', function (req, res) {
+    console.log('GET:Toll usage query for user:' + req.params.userid);
+    res.json({
+        tollusage: [{road: 'Sydney Harbour Bridge', entry: 'Milsons Point', entryDate: '14:34:12 06/12/2014'},
+            {
+                road: 'M7',
+                entry: 'Winston Hill',
+                exit: 'Eastern Creek',
+                entryDate: '14:34:12 12/12/2014',
+                exitDate: '14:58:10 12/12/2014'
+            }
+        ]
+    })
 });
 
 module.exports = app;
