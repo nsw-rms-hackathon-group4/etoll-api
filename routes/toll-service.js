@@ -11,7 +11,7 @@ TollService.init = function () {
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function (callback) {
         console.log("connected successfully");
-//        TollService.createSchema();
+        TollService.createSchema();
 //        TollService.importTollGates();
     });
 };
