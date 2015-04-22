@@ -89,16 +89,16 @@ TollService.addEntry = function(entry, cb) {
 TollService.addExit = function(exit, cb) {
     try {
         // Retrieve latest tollUsage record  for userId
-        var query = TollService.TollUsage.find({userId: '1235'}).limit(1).sort('-entryTime');
+        var query = TollService.TollUsage.find({userId: exit.userId}).limit(1).sort('-entryTime');
         query.exec(function (err, tollUsage) {
             if (err) return console.error(err);
             if (tollUsage) {
                 // Update  with exit details
-            tollUsage.exitPoint = exit.exitPoint;
-            tollUsage.exitTime = exit.exitTime;
-            cb(tollUsage);
+                tollUsage.exitPoint = exit.exitPoint;
+                tollUsage.exitTime = exit.exitTime;
+                cb(tollUsage);
             } else {
-                cb({userId: '1235', entryPoint: "Empty", entryTime: '12:12:12 12/12/2012'});
+                cb({error: 'Entry not found'});
             }
             // Update  with exit details
 //            tollUsage.exitPoint = exit.exitPoint;
