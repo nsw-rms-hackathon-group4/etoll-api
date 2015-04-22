@@ -21,9 +21,19 @@ TollService.createSchema = function () {
         road: String,
         gates: [{name: String, longtitude: String, latitude: String}]
     });
-    console.log("Creating model");
+    TollService.tollUsageSchema = mongoose.Schema({
+        userId: String,
+        road: String,
+        entryPoint: String,
+        entryTime: String,
+        exitPoint: String,
+        exitTime: String
+    });
+    console.log("Creating models");
     TollService.TollGate = mongoose.model("TollGate", TollService.tollGateSchema);
+    TollService.TollUsage = mongoose.model("TollUsage", TollService.tollUsageSchema);
 };
+
 
 TollService.importTollGates = function () {
 
@@ -66,6 +76,32 @@ TollService.findAllGates = function (cb) {
         cb(tollgates);
     });
 };
+
+TollService.addEntry = function(entry, cb) {
+    var newUsage = new TollService.TollUsage(entry);
+    newUsage.save(function (err, savedUsage) {
+        if (err) return console.error(err);
+        console.log("Added entry" + savedUsage.userId + " : " + savedUsage.road + " : " + savedUsage.entryPoint + " : " + savedUsage.entryTime);
+        cb(savedUsage);
+    });
+};
+
+TollService.addExit = function(exit, cb) {
+    // Retrieve latest tollUsage record  for userid
+    var query = TollService.TollUsage.find({userid: exit.userid}).limit(1).sort('-entrytime');
+
+    query.exec(function(err, tollUsage) {
+        // Update  with exit details
+        tollUsage.exitPoint = exit.exitPoint;
+        tollUsage.exitTime = exit.exitTime;
+        tollUsage.save(function (err, savedUsage) {
+            if (err) return console.error(err);
+            console.log("Updated with exit info" + savedUsage.userId + " : " + savedUsage.exitPoint + " : " + savedUsage.exitTime);
+            cb(savedUsage);
+        });
+    });
+};
+
 
 module.exports = TollService;
 

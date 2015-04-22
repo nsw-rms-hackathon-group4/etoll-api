@@ -35,15 +35,19 @@ app.get('/exit', function (req, res, next) {
     res.json({id: '1234', message: 'Exit recorded'})
 });
 
-app.post('/add-entry', function (req, res) {
-    console.log('POST:Adding entry' + req.body);
-    res.json(req.body);
+app.post('/add-entry',function(req,res){
+  console.log('POST:Adding entry' + req.body);
+  tollService.addEntry(req.body, function(usage) {
+      res.json(usage);
+  });
 });
 
-app.post('/add-exit', function (req, res) {
-    console.log('POST:Adding exist' + req.body);
-    console.log(req.body);
-    res.json(req.body);
+app.post('/add-exit',function(req,res){
+  console.log('POST:Adding exist' + req.body);
+  tollService.addExit(req.body, function(usage) {
+      res.json(usage);
+  });
+
 });
 
 app.get('/toll-gates/', function (req, res) {
