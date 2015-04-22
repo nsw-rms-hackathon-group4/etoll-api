@@ -90,7 +90,7 @@ TollService.addExit = function(exit, cb) {
     try {
         var query = {userId : exit.userId};
         var update = {exitPoint: exit.exitPoint, exitTime: exit.exitTime};
-        var options = {sort: '-entryTime'};
+        var options = {sort: '-entryTime', new: 'true'};
         TollService.TollUsage.findOneAndUpdate(query, update, options, function (err, savedUsage) {
                 if (err) return console.error(err);
                 console.log("Updated with exit data" + savedUsage.userId + " : " + savedUsage.exitPoint + " : " + savedUsage.exitTime);
