@@ -26,15 +26,9 @@ app.get('/', function (req, res, next) {
     res.render('index', {title: 'Etoll Mobile Api'});
 });
 
-
-app.get('/entry', function (req, res, next) {
-    res.json({id: '1234', message: 'Entry recorded'})
-});
-
-app.get('/exit', function (req, res, next) {
-    res.json({id: '1234', message: 'Exit recorded'})
-});
-
+/**
+ * Add toll road entry
+ */
 app.post('/add-entry',function(req,res){
   console.log('POST:Adding entry' + req.body);
   tollService.addEntry(req.body, function(usage) {
@@ -42,6 +36,9 @@ app.post('/add-entry',function(req,res){
   });
 });
 
+/**
+ * Add toll road exit
+ */
 app.post('/add-exit',function(req,res){
   console.log('POST:Adding exit info' + req.body);
   try {
@@ -55,6 +52,9 @@ app.post('/add-exit',function(req,res){
 });
 
 
+/**
+ * Get all toll roads and gates
+ */
 app.get('/toll-gates/', function (req, res) {
     console.log('Getting tollgate locations');
 
@@ -74,8 +74,9 @@ app.get('/toll-gates/', function (req, res) {
 });
 
 
-
-
+/**
+ * Get all toll usages for userId
+ */
 app.get('/toll-usage/:userId', function (req, res) {
     console.log('GET:Toll usage query for user:' + req.params.userId);
     tollService.findUsageByUserId(req.params.userId, function (tollUsages) {
@@ -95,7 +96,9 @@ app.get('/toll-usage/:userId', function (req, res) {
 //    })
 });
 
-
+/**
+ * Determine toll charge and update tollUsage record with the charge
+ */
 app.post('/toll-charge/', function (req, res) {
     console.log('GET:Toll charge for toll usage:' + req.body);
     tollService.charge(req.body, function (usage) {
