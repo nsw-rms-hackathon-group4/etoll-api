@@ -78,7 +78,7 @@ app.get('/toll-gates/', function (req, res) {
 
 app.get('/toll-usage/:userId', function (req, res) {
     console.log('GET:Toll usage query for user:' + req.params.userId);
-    tollService.findUsageByUserId(req.param.userId, function (tollUsages) {
+    tollService.findUsageByUserId(req.params.userId, function (tollUsages) {
         res.json(tollUsages);
     });
 //    res.json({
